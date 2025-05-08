@@ -3,8 +3,10 @@ import { useTable, usePagination } from 'react-table';
 import '../Navbar/Navbar.css';
 
 const Payment = () => {
-    // Sample data (replace with real API data later)
-    const data = useMemo(() => {
+
+    const [searchInput, setSearchInput] = React.useState('');
+
+    const allData = useMemo(() => {
         return Array.from({ length: 30 }, (_, i) => ({
             bookingId: `100${i + 1}`,
             date: '12-02-21',
@@ -14,6 +16,15 @@ const Payment = () => {
             status: 'Success',
         }));
     }, []);
+
+    const data = useMemo(() => {
+        if (!searchInput) return allData;
+        return allData.filter(item =>
+            Object.values(item).some(val =>
+                val.toLowerCase().includes(searchInput.toLowerCase())
+            )
+        );
+    }, [allData, searchInput]);
 
     const columns = useMemo(() => [
         { Header: 'Booking ID', accessor: 'bookingId' },
@@ -40,7 +51,7 @@ const Payment = () => {
         {
             columns,
             data,
-            initialState: { pageSize: 7 },
+            initialState: { pageSize: 6 },
         },
         usePagination
     );
@@ -51,7 +62,7 @@ const Payment = () => {
 
                 <div className="mb-2 row justify-content-end">
                     <div className="col-md-3 col-6">
-                        <label htmlFor="paymentType" className="form-label sel_lbl">Select BookingID</label>
+                        <label htmlFor="paymentType" className="form-label sel_lbl">Select Districts</label>
                         <select className="form-select" id="paymentType">
                             <option value="">Select</option>
                             <option value="1">IHP-Panchkula</option>
@@ -68,6 +79,16 @@ const Payment = () => {
                             <i className="fas fa-search"></i>
                         </button>
                     </div>
+                </div>
+
+                <div className="col-md-3 col-6 d-flex justify-content-end">
+                    <input
+                        type="text"
+                        className="form-control search_input mb-2"
+                        placeholder="Search..."
+                        value={searchInput}
+                        onChange={e => setSearchInput(e.target.value)}
+                    />
                 </div>
 
                 <div className="table-responsive">
@@ -97,7 +118,7 @@ const Payment = () => {
                 </div>
 
                 <div className="pagination d-flex justify-content-between align-items-center mt-3">
-                    <button onClick={() => previousPage()} disabled={!canPreviousPage} className="btn btn-outline-primary">
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage} className="btn btn-outline-success">
                         Previous
                     </button>
                     <span>
@@ -106,7 +127,7 @@ const Payment = () => {
                             {pageIndex + 1} of {pageOptions.length}
                         </strong>
                     </span>
-                    <button onClick={() => nextPage()} disabled={!canNextPage} className="btn btn-outline-primary">
+                    <button onClick={() => nextPage()} disabled={!canNextPage} className="btn btn-outline-success">
                         Next
                     </button>
                 </div>
