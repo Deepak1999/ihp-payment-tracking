@@ -10,6 +10,11 @@ const Navbar = () => {
     const handleLogout = () => {
         console.log("Logged out!");
         setShowLogout(false);
+        localStorage.removeItem('auth');
+        localStorage.removeItem('adminuserid');
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('loginSource');
+        window.location.href = '/';
     };
 
     return (
@@ -30,7 +35,7 @@ const Navbar = () => {
                                 <Link className="nav-link tab-link" to="/payment">Payment</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link tab-link" onClick={() => setShowLogout(true)}>Logout</a>
+                                <a className="nav-link tab-link" to="/" onClick={() => setShowLogout(true)}>Logout</a>
                             </li>
                         </ul>
                     </div>

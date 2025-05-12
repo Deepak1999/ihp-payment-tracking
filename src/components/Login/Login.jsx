@@ -1,17 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { toast, ToastContainer } from 'react-toastify';
+
 
 const Login = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
 
-        // Simulate login success
-        setIsAuthenticated(true);
-        localStorage.setItem('auth', 'true'); // Persist login
-        navigate('/home'); // Redirect to home page
+        try {
+            const response = await fetch('https://api1.liveabuzz.com/account/web/v1/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userName: email,
+                    passwd: password,
+                    source: 5,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+
+            if (data.statusDescription?.statusCode === 200 && data.statusDescription?.statusMessage === 'Success') {
+                const user = data.adminUser;
+                localStorage.setItem('jwtToken', user.admUserTokenDetails.jwtToken);
+                localStorage.setItem('loginSource', user.loginSource);
+                localStorage.setItem('adminuserid', user.id);
+                localStorage.setItem('auth', 'true');
+
+                setIsAuthenticated(true);
+                navigate('/home');
+            } else {
+                toast.error(data.statusDescription?.statusMessage || 'Login failed. Please try again.');
+            }
+        } catch (error) {
+            toast.error('Login failed. Please try again.');
+        }
     };
 
     return (
@@ -25,20 +62,38 @@ const Login = ({ setIsAuthenticated }) => {
                 <div className="login-title">Login</div>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3 text-start">
-                        <input type="text" className="form-control" placeholder="Username*" required />
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Username*"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
                     </div>
                     <div className="mb-3 text-start position-relative">
-                        <input type="password" className="form-control" placeholder="Password*" required />
+                        <input
+                            type="password"
+                            className="form-control"
+                            placeholder="Password*"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
                         <span className="position-absolute end-0 top-50 translate-middle-y me-3">
                             <i className="fas fa-eye-slash"></i>
                         </span>
                     </div>
+
+                    {error && <div className="text-danger mb-2">{error}</div>}
                     <div className="d-grid">
                         <button type="submit" className="btn btn-success">SIGN IN</button>
                     </div>
                     <span className="reset-text">Reset</span>
                 </form>
             </div>
+            <ToastContainer />
+
         </div>
     );
 };
