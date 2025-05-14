@@ -35,6 +35,15 @@ const Navbar = () => {
                                 <Link className="nav-link tab-link" to="/payment">Payment</Link>
                             </li>
                             <li className="nav-item">
+                                <Link className="nav-link tab-link" to="/spnc-adj">Suspense Adjustment</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link tab-link" to="/report">Report</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link tab-link" to="/suspense">Suspense Payments</Link>
+                            </li>
+                            <li className="nav-item">
                                 <a className="nav-link tab-link" to="/" onClick={() => setShowLogout(true)}>Logout</a>
                             </li>
                         </ul>

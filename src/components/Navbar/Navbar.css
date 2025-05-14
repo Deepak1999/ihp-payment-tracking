@@ -48,7 +48,7 @@ body {
 }
 
 .navbar-nav {
-    width: 26%;
+    width: 45%;
     display: flex;
     justify-content: space-evenly;
 }
@@ -103,7 +103,8 @@ body {
     }
 
     .table {
-        min-width: 700px;
+        /* min-width: 700px; */
+        min-width: 1200px;
         width: 100%;
     }
 

@@ -5,6 +5,9 @@ import Payment from './components/Home/Payment';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import Suspense from './components/Home/Suspense';
+import SuspenseAdjustment from './components/Home/SuspenseAdjustment';
+import Report from './components/Home/Report';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -40,6 +43,30 @@ function App() {
           element={
             <PrivateRoute isAuthenticated={isAuthenticated}>
               <Payment />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/suspense"
+          element={
+            <PrivateRoute isAuthenticated={isAuthenticated}>
+              <Suspense />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/spnc-adj"
+          element={
+            <PrivateRoute isAuthenticated={isAuthenticated}>
+              <SuspenseAdjustment />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/report"
+          element={
+            <PrivateRoute isAuthenticated={isAuthenticated}>
+              <Report />
             </PrivateRoute>
           }
         />

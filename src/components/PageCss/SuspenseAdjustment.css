@@ -1,0 +1,5 @@
+@media (max-width: 768px) {
+    .row>div {
+        margin-bottom: 10px;
+    }
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { toast, ToastContainer } from 'react-toastify';
+import ApiBaseUrl from '../ApiBaseUrl/ApiBaseUrl';
 
 
 const Login = ({ setIsAuthenticated }) => {
@@ -16,7 +17,7 @@ const Login = ({ setIsAuthenticated }) => {
         setError('');
 
         try {
-            const response = await fetch('https://api1.liveabuzz.com/account/web/v1/login', {
+            const response = await fetch(`${ApiBaseUrl}/account/web/v1/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

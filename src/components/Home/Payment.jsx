@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { use, useEffect, useMemo, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import '../Navbar/Navbar.css';
+import ApiBaseUrl from '../ApiBaseUrl/ApiBaseUrl';
 
 const Payment = () => {
     const [searchInput, setSearchInput] = useState('');
+    const [payeName, setPayeName] = useState('');
     const [bookingData, setBookingData] = useState([]);
     const [selectedBookingId, setSelectedBookingId] = useState('');
     const [error, setError] = useState('');
@@ -29,7 +31,7 @@ const Payment = () => {
         };
 
         try {
-            const response = await fetch(`https://api1.liveabuzz.com/web/bookings/v1/user/${userId}`, {
+            const response = await fetch(`${ApiBaseUrl}/web/bookings/v1/user/${userId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -42,6 +44,7 @@ const Payment = () => {
                     info => info?.bookingDetails?.paidPayments || []
                 );
                 setBookingData(paidPayments);
+                fetchPaymentReport(paidPayments);
             } else {
                 setError(result.statusDescription?.statusMessage || 'Failed to fetch booking data.');
                 setBookingData([]);
@@ -50,6 +53,58 @@ const Payment = () => {
             setError('Something went wrong while fetching data.');
         } finally {
             setLoading(false);
+        }
+    };
+
+
+    const fetchPaymentReport = async (paidPayments) => {
+        const userId = localStorage.getItem('adminuserid');
+        const jwtToken = localStorage.getItem('jwtToken');
+        const source = localStorage.getItem('loginSource');
+
+        if (!userId || !jwtToken || !source) {
+            setError('Missing required credentials.');
+            return;
+        }
+
+        try {
+            const updatedPayments = await Promise.all(
+                paidPayments.map(async (payment) => {
+                    const transactionId = payment.transactionId;
+
+                    const payload = {
+                        jwtToken,
+                        source,
+                        transactionId,
+                    };
+
+                    const response = await fetch(`${ApiBaseUrl}/web/system/v1/data/paymentsreport/${userId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result?.statusDescription?.statusCode === 200) {
+                        const bankResp = result?.bookingsInfo?.[0]?.bookingDetails?.btPayments?.[0]?.bankResp;
+                        return {
+                            ...payment,
+                            remitterName: bankResp?.remitterName || 'N/A',
+                        };
+                    } else {
+                        console.error('Payment report error:', result?.statusDescription?.statusMessage);
+                        return {
+                            ...payment,
+                            remitterName: 'Error',
+                        };
+                    }
+                })
+            );
+
+            setBookingData(updatedPayments);
+        } catch (err) {
+            console.error('Error fetching payment report:', err);
         }
     };
 
@@ -66,11 +121,22 @@ const Payment = () => {
         { Header: 'Booking ID', accessor: 'masterBookingId' },
         {
             Header: 'Date',
-            accessor: 'dateTime',
-            Cell: ({ value }) => new Date(value).toLocaleDateString()
+            accessor: 'responseDateTime',
+            Cell: ({ value }) => {
+                const date = new Date(value);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+
+                return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+            }
         },
         { Header: 'Payment Source', accessor: 'payMode' },
         { Header: 'Transaction ID', accessor: 'transactionId' },
+        { Header: 'Client Name', accessor: 'remitterName' },
         {
             Header: 'Amount',
             accessor: 'totalAmount',
