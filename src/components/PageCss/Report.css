@@ -29,3 +29,14 @@
     font-size: 16px;
     color: #555;
 }
+
+/* Optional: Center content or adjust spacing on mobile */
+@media (max-width: 576px) {
+    .form-label {
+        font-size: 14px;
+    }
+
+    button.btn {
+        margin-top: 10px;
+    }
+}
