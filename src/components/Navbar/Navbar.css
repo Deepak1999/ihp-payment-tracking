@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --primary-red: #dc2c1d;
     --primary-green: #03a458;
 }
@@ -67,7 +67,6 @@ body {
 }
 
 .table-responsive {
-    /* max-height: 300px; */
     overflow-y: auto;
     position: relative;
 }
@@ -103,7 +102,6 @@ body {
     }
 
     .table {
-        /* min-width: 700px; */
         min-width: 1200px;
         width: 100%;
     }
@@ -126,6 +124,150 @@ body {
 
     .table tbody tr {
         border-top: 1px solid #ddd;
+    }
+
+    .search_div button {
+        width: 100% !important;
+    }
+
+    .sel_lbl {
+        font-size: 14px !important;
+    }
+
+    .tab-link.active {
+        text-align: center !important;
+    }
+} */
+
+:root {
+    --primary-red: #dc2c1d;
+    --primary-green: #03a458;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    /* prevent horizontal scroll */
+    overflow-y: auto;
+    /* enable vertical scroll */
+}
+
+.navbar {
+    background-color: #c4e5d5;
+}
+
+.navbar-brand {
+    color: white;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: #03a458;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    color: var(--primary-green) !important;
+    text-decoration: underline !important;
+}
+
+.tab-content {
+    padding: 20px;
+}
+
+/* ✅ Scrollable table fix */
+.table-responsive {
+    max-height: 400px; /* adjust height as needed */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #dee2e6;
+}
+
+/* Sticky table headers */
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #d1e7dd;
+    z-index: 2;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.btn-green {
+    background-color: var(--primary-green);
+    color: white;
+}
+
+.btn-green:hover {
+    background-color: #02894a;
+}
+
+.ihp_logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 100px;
+}
+
+.navbar-nav {
+    width: 45%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.search_div i {
+    text-align: center;
+    font-size: 14px;
+}
+
+#home {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tab-link.active {
+    background-color: #28a745;
+    color: white !important;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.sel_lbl {
+    font-size: 14px !important;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        min-width: 1200px;
+        width: 100%;
+    }
+
+    .table th,
+    .table td {
+        white-space: nowrap;
+        padding: 12px 16px;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background-color: #d4edda;
+        border-bottom: 2px solid #bbb;
+        position: sticky;
+        top: 0;
+        z-index: 1;
     }
 
     .search_div button {

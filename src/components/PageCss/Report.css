@@ -1,0 +1,31 @@
+.report-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+}
+
+.report-content {
+    max-width: 500px;
+}
+
+.report-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.report-title {
+    font-size: 24px;
+    color: #03a458;
+    font-weight: bold;
+}
+
+.report-subtitle {
+    font-size: 16px;
+    color: #555;
+}

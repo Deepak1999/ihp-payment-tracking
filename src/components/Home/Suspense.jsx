@@ -17,7 +17,7 @@ const Suspense = () => {
 
     const fetchSuspenseClearanceData = async () => {
         try {
-            setLoading(true); // ✅ 2. Set loading true when API starts
+            setLoading(true);
             const jwtToken = localStorage.getItem('jwtToken');
             const source = localStorage.getItem('loginSource');
             const userId = localStorage.getItem('adminuserid');
