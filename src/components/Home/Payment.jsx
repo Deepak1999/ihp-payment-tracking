@@ -5,7 +5,6 @@ import ApiBaseUrl from '../ApiBaseUrl/ApiBaseUrl';
 
 const Payment = () => {
     const [searchInput, setSearchInput] = useState('');
-    const [payeName, setPayeName] = useState('');
     const [bookingData, setBookingData] = useState([]);
     const [selectedBookingId, setSelectedBookingId] = useState('');
     const [error, setError] = useState('');
@@ -43,8 +42,11 @@ const Payment = () => {
                 const paidPayments = result.bookingsInfo?.flatMap(
                     info => info?.bookingDetails?.paidPayments || []
                 );
-                setBookingData(paidPayments);
-                fetchPaymentReport(paidPayments);
+
+                const sortedPayments = [...paidPayments].sort((a, b) => b.dateTime - a.dateTime);
+
+                setBookingData(sortedPayments);
+                fetchPaymentReport(sortedPayments);
             } else {
                 setError(result.statusDescription?.statusMessage || 'Failed to fetch booking data.');
                 setBookingData([]);
