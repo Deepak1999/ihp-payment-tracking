@@ -242,38 +242,6 @@ const Payment = () => {
                         </div>
                     </div>
                 ) : (
-                    // <div className="table-responsive scrollable-table">
-                    //     <table {...getTableProps()} className="table table-bordered table-striped mt-0">
-                    //         <thead className="table-success">
-                    //             {headerGroups.map(headerGroup => (
-                    //                 <tr {...headerGroup.getHeaderGroupProps()}>
-                    //                     {headerGroup.headers.map(column => (
-                    //                         <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                    //                     ))}
-                    //                 </tr>
-                    //             ))}
-                    //         </thead>
-                    //         <tbody {...getTableBodyProps()}>
-                    //             {page.map(row => {
-                    //                 prepareRow(row);
-                    //                 return (
-                    //                     <tr {...row.getRowProps()}>
-                    //                         {row.cells.map(cell => (
-                    //                             <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    //                         ))}
-                    //                     </tr>
-                    //                 );
-                    //             })}
-                    //             {page.length === 0 && (
-                    //                 <tr>
-                    //                     <td colSpan={columns.length} className="text-center">
-                    //                         No payment records found.
-                    //                     </td>
-                    //                 </tr>
-                    //             )}
-                    //         </tbody>
-                    //     </table>
-                    // </div>
                     <div className="table-responsive">
                         <table {...getTableProps()} className="table table-bordered table-striped mt-0">
                             <thead className="table-success">
